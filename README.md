@@ -77,3 +77,78 @@
 - Absolutely! That would be so helpful!
 - I guess, but it is not that important to me.
 - Absolutely! That would be nice.
+
+# Requirements
+## Goals
+MunchQuest will be a messaging-based system, facilitating communication between Munchie Mart administrators, employees, and consumers. The purpose of MunchQuest is to improve Munchie Mart consumer interactions to make them more efficient and enjoyable. As such, this project aims to solve three specific issues: when a desired product is out-of-stock, when a desired product is not carried, and when a Munchie Mart’s hours are unknown. With the use of MunchQuest, consumers (mostly students) will be able to figure out if a product is available before going to a Munchie Mart, and to request a product if it is not carried. They will also be able to request the Munchie Mart’s hours. This project will allow students to figure out food options before they enter a Munchie Mart, which will not only increase consumer satisfaction, but decrease any unnecessary traffic in the Munchie Mart. 
+
+## User Personas
+* Mac Annie Callee
+  - Occupation: Junior Student in Engineering
+  - Age: 20
+  - Gender: F
+  - Location: Towers
+  - Meal Plan: 8 Meals/Week
+  - Objective: To find gluten free food on campus and Munchie Marts
+* Harry Oliver Danson
+  - Occupation: Freshman Student in Peabody
+  - Age: 18
+  - Gender: M
+  - Location: Commons
+  - Meal Plan: 21 Meals/Week
+  - Objective: To best use all of given meal swipes to not waste money
+* Syka Lojee
+  - Occupation: Senior Student in A&S
+  - Age: 22
+  - Gender: F
+  - Location: Highland
+  - Meal Plan: Flex Meals Only
+  - Objective: To get quick meals and find specific foods
+* Min Chi Mart
+  - Occupation: Vanderbilt Dining Worker
+  - Age: 42
+  - Gender: M
+  - Location: Branscomb/Rand
+  - Meal Plan: N/A
+  - Objective: Answer all requests and do job well
+
+## User Stories
+* As a Munchie Mart consumer with dietary restrictions, I want to know if my allergen-friendly food is in stock at the Towers Munchie Mart, so that I can go somewhere else if I need to.
+* As a Munchie Mart consumer with 21 meal swipes a week, I want to know when Munchie Marts are open, so that I can use all of my meal swipes.
+* As a Munchie Mart consumer with no meal plan, I want to know if a specific entrée is in the Highland Munchie Mart, so that I can order food otherwise.
+* As a Munchie Mart employee, I want to have not be overwhelmed by questions but still answer student requests.
+* As a Munchie Mart administrator, I want to understand what requests students have to best serve the consumer population.
+
+## Overview
+1. Admin
+  * Requests
+   - Possible call: “requests”
+•	Gets all item requests sent to all Munchie Marts, sends this information to administrator, and clears it from system storage
+o	Employee
+	Checkin
+•	Possible call: “checkin Branscomb”
+•	Registers employee’s phone number as employee currently working at specific Munchie Mart
+	Checkout
+•	Possible call: “checkout Highland”
+•	Unregisters employee’s phone number from being the current employee at a specific Munchie Mart
+	Questions
+•	Possible call: “question”
+•	Sends a text back with the oldest question asked
+	Answer
+•	Possible call: “answer available Personalized Message”
+•	Sends a text with answer to whoever asked the oldest question asked
+o	Consumer
+	Find
+•	Possible call: “find Towers Annie’s Mac and Cheese”
+•	Sends notification to employee, but also stores in questions that have been asked for that Munchie Mart
+	Cancel
+•	Possible call: “cancel”
+•	deletes last question asked by user
+	Request
+•	Possible call: “request Commons Rocket Subs”
+•	Adds requested item or message to storage of requests for that Munchie mart
+
+
+
+
+# Development Approach
