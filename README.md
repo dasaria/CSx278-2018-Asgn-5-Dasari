@@ -123,32 +123,70 @@ MunchQuest will be a messaging-based system, facilitating communication between 
 1. Admin
   * Requests
    - Possible call: “requests”
-•	Gets all item requests sent to all Munchie Marts, sends this information to administrator, and clears it from system storage
-o	Employee
-	Checkin
-•	Possible call: “checkin Branscomb”
-•	Registers employee’s phone number as employee currently working at specific Munchie Mart
-	Checkout
-•	Possible call: “checkout Highland”
-•	Unregisters employee’s phone number from being the current employee at a specific Munchie Mart
-	Questions
-•	Possible call: “question”
-•	Sends a text back with the oldest question asked
-	Answer
-•	Possible call: “answer available Personalized Message”
-•	Sends a text with answer to whoever asked the oldest question asked
-o	Consumer
-	Find
-•	Possible call: “find Towers Annie’s Mac and Cheese”
-•	Sends notification to employee, but also stores in questions that have been asked for that Munchie Mart
-	Cancel
-•	Possible call: “cancel”
-•	deletes last question asked by user
-	Request
-•	Possible call: “request Commons Rocket Subs”
-•	Adds requested item or message to storage of requests for that Munchie mart
+   - Gets all item requests sent to all Munchie Marts, sends this information to administrator, and clears it from system storage
+2. Employee
+  * Checkin
+   - Possible call: “checkin Branscomb”
+   - Registers employee’s phone number as employee currently working at specific Munchie Mart
+  * Checkout
+   - Possible call: “checkout Highland”
+   - Unregisters employee’s phone number from being the current employee at a specific Munchie Mart
+  * Question
+   - Possible call: “question”
+   - Sends a text back with the oldest question asked
+  * Answer
+   - Possible call: “answer available Personalized Message”
+   - Sends a text with answer to whoever asked the oldest question asked
+3. Consumer
+  * Find
+   - Possible call: “find Towers Annie’s Mac and Cheese”
+   - Sends notification to employee, but also stores in questions that have been asked for that Munchie Mart
+  * Cancel
+   - Possible call: “cancel”
+   - deletes last question asked by user
+  * Request
+   - Possible call: “request Commons Rocket Subs”
+   - Adds requested item or message to storage of requests for that Munchie mart
+   
+## Non-Functional Requirements
+* This application must be built using Clojure.
+* This application must be hosted on AWS.
+* This application must be used through cellular messaging.
+* This application must be able to support all undergraduate users.
 
+## Risks
+* Munchie Mart consumers will overuse the system.
+* This application may become a burden for Munchie Mart employees.
+* All food requests cannot be honored, so this may dissatisfy consumers.
 
-
+## Future Iterations
+Future iterations will probably include a few additional features:
+* Consolidating food requests into a more readable format for the administrator.
+* Allowing all questions to come through and be answered in a more efficient manner than asking the Munchie Mart employee directly.
+* Allowing a comprehensive search of a food item or Munchie Mart hours.
+* Allowing administrator to add a new munchie mart.
+* Allowing administrator to change.
 
 # Development Approach
+This style of development process was chosen in order to capture every important step that is required in software development, as well as to make this iterative. Having all of these steps ensures that a “wrong” product will not be created. This process allows for making the right assumptions, mitigating risks, and creating a successful product. Estimates for this project are simply guesses, and are shown per step. As there is one developer/member for this project, much of these estimates will be based on their schedule and possible conflicts that arise. As such, the following time estimates are tentative.
+
+* Communication – 2 days
+This process began with communication and empathizing with the users. Three people were interviewed about their interactions and feelings about Munchie Marts. They were also asked for their feelings about a potential solution such as MunchQuest. This interview process provided insight into what was important for specific people, so as to ensure that the project will provide desired solutions to users. Understanding the problem clearly diminishes the risk of creating a project that will not be used by the users.
+
+* Requirement Gathering – 2 days
+Requirement gathering came from consolidation of interview notes and understanding of the problem. This was necessary in order to figure out exactly what the users would use and desired from this system. Although this is how major requirements (such as the solutions for the three major problems) were found, there were some requirements that arose from being necessary for the major requirements, such as an employee checking in and checking out. Properly gathering requirements diminishes the risk of creating a product that is not what users want.
+
+* Software Design – 4 days
+It would never make sense for a final software design to be the first one that was thought of. This step ensures that many ideas are explored for how to design the project before one design is decided upon, diminishing the risk of a poorly designed project. After thinking through different patterns and designs, the design of the first assignments from this class seems to be a good framework for this project. However, this will have to be further researched before finalizing the design.
+
+* Implementation – 4 days
+Implementation can only begin once the software design is finalized. This will require outlining the framework of the project and then creating the specific implementations for different actions required by the project. This should simply be a realization of the software design, so actual coding should not take as much time. Debugging may take a little longer, however. Implementation should be done to have efficient, clean, and commented code. Implementation is where risks such as memory leaks and storage issues can be avoided. 
+
+* Testing – 2 days
+This is important to ensure that the implementation was done correctly. This minimizes the bugs that will be deployed with the first iteration of this project. More importantly, testing ensures that all functionality
+
+* Maintenance - continuous
+For the current state of this project, maintenance will require having a point of contact that understands the code and can possibly fix small bugs. Having maintenance decreases the risk of an obsolete project if one part doesn’t work right after deployment (although testing should ensure this doesn’t happen).
+
+* Evolution – continuous and N/A
+Evolution is for the future iterations of this project. This minimizes the risk of a stagnant, out-of-date project. With the constant progress and work towards this project, future versions will still be applicable. Current functionality will be updated to reflect feedback given and there will be more functionality than the minimum viable product being developed now. This allows this process to be iterative and to have a continuing, successful product.
