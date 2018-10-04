@@ -120,11 +120,11 @@ MunchQuest will be a messaging-based system, facilitating communication between 
 * As a Munchie Mart administrator, I want to understand what requests students have to best serve the consumer population.
 
 ## Overview
-1. Admin
+** Admin **
   * Requests
     - Possible call: “requests”
     - Gets all item requests sent to all Munchie Marts, sends this information to administrator, and clears it from system storage
-2. Employee
+** Employee **
   * Checkin
     - Possible call: “checkin Branscomb”
     - Registers employee’s phone number as employee currently working at specific Munchie Mart
@@ -137,7 +137,7 @@ MunchQuest will be a messaging-based system, facilitating communication between 
   * Answer
     - Possible call: “answer available Personalized Message”
     - Sends a text with answer to whoever asked the oldest question asked
-3. Consumer
+** Consumer **
   * Find
     - Possible call: “find Towers Annie’s Mac and Cheese”
     - Sends notification to employee, but also stores in questions that have been asked for that Munchie Mart
@@ -183,7 +183,7 @@ It would never make sense for a final software design to be the first one that w
 Implementation can only begin once the software design is finalized. This will require outlining the framework of the project and then creating the specific implementations for different actions required by the project. This should simply be a realization of the software design, so actual coding should not take as much time. Debugging may take a little longer, however. Implementation should be done to have efficient, clean, and commented code. Implementation is where risks such as memory leaks and storage issues can be avoided. 
 
 * Testing (2 days) - 
-This is important to ensure that the implementation was done correctly. This minimizes the bugs that will be deployed with the first iteration of this project. More importantly, testing ensures that all functionality
+This is important to ensure that the implementation was done correctly. This minimizes the bugs that will be deployed with the first iteration of this project. More importantly, testing ensures that all functionality works as expected, such that the minimum viable product is successful.
 
 * Maintenance (continuous, N/A) - 
 For the current state of this project, maintenance will require having a point of contact that understands the code and can possibly fix small bugs. Having maintenance decreases the risk of an obsolete project if one part doesn’t work right after deployment (although testing should ensure this doesn’t happen).
