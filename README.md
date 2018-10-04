@@ -120,11 +120,11 @@ MunchQuest will be a messaging-based system, facilitating communication between 
 * As a Munchie Mart administrator, I want to understand what requests students have to best serve the consumer population.
 
 ## Overview
-** Admin **
+**Admin**
   * Requests
     - Possible call: “requests”
     - Gets all item requests sent to all Munchie Marts, sends this information to administrator, and clears it from system storage
-** Employee **
+**Employee**
   * Checkin
     - Possible call: “checkin Branscomb”
     - Registers employee’s phone number as employee currently working at specific Munchie Mart
@@ -137,7 +137,7 @@ MunchQuest will be a messaging-based system, facilitating communication between 
   * Answer
     - Possible call: “answer available Personalized Message”
     - Sends a text with answer to whoever asked the oldest question asked
-** Consumer **
+**Consumer**
   * Find
     - Possible call: “find Towers Annie’s Mac and Cheese”
     - Sends notification to employee, but also stores in questions that have been asked for that Munchie Mart
