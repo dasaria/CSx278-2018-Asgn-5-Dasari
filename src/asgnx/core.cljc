@@ -482,6 +482,7 @@
              ;; "find" #(add-question %1 %2)
              ;; "cancel" #(remove-question)
              ;; "request" #(add-request)
+             ;; "hours #(get-hours)"
              "homepage" (stateless homepage)
              "office"   (stateless office-hours)
              "expert"   #(add-expert %1 %2)
