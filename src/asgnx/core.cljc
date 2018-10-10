@@ -474,11 +474,20 @@
 
 (def routes {"default"  (stateless (fn [& args] "Unknown command."))
              "welcome"  (stateless welcome)
+             ;; "requests" #(get-requests)
+             ;; "checkin" #(checkin-employee)
+             ;; "checkout" #(checkout-employee)
+             ;; "question" #(send-question)
+             ;; "answer" #(answer-question %1 %2)
+             ;; "find" #(add-question %1 %2)
+             ;; "cancel" #(remove-question)
+             ;; "request" #(add-request)
              "homepage" (stateless homepage)
              "office"   (stateless office-hours)
              "expert"   #(add-expert %1 %2)
              "ask"      #(ask-experts %1 %2)
              "answer"   #(answer-question %1 %2)})
+
 ;; Asgn 3.
 ;;
 ;; @Todo: Add mappings of the cmds "expert", "ask", and "answer" to
@@ -488,7 +497,11 @@
 ;;})
 
 
-;; Don't edit!
+;; ****************************************************************************
+;; Create food-requests-query
+
+;; Create current-employees-query
+
 (defn experts-on-topic-query [state-mgr pmsg]
   (let [[topic]  (:args pmsg)]
     (list! state-mgr [:expert topic])))
@@ -501,11 +514,19 @@
 
 
 ;; ****************************************************************************
-;; Change to add 
+;; Add
 (def queries
   {"expert" experts-on-topic-query
    "ask"    experts-on-topic-query
    "answer" conversations-for-user-query})
+   ;; "requests" food-requests-query
+   ;; "checkin" current-employees-query
+   ;; "checkout" current-employees-query
+   ;; "question" conversations-for-user-query
+   ;; "answer" conversations-for-user-query
+   ;; "find" conversations-for-user-query
+   ;; "cancel" conversations-for-user-query
+   ;; "request" food-requests-query
 
 
 ;; Don't edit!
