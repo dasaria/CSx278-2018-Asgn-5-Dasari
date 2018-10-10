@@ -3,9 +3,9 @@
 # MunchQuest
 
    Munchie Marts are a big part of Vanderbilt Campus Dining. Whether it's to use a leftover meal swipe of the week or for a quick meal, many people venture to the various Munchie Marts on campus. Although Munchie Marts are very helpful, there are issues that can be fixed and improvements that can be made. Based on information from interviews, MunchQuest will aim to allow students to quickly learn a Munchie Mart's hours, figure out if specific items are available at a Munchie Mart, and make requests for what a Munchie Mart should carry.
-  
+
    The primary users of this system are students and other Vanderbilt personnel who would buy products from Munchie Mart. The secondary users that will use this system are the Munchie Mart employees and administration. Munchie Mart employees will be required to checkin and checkout of the MunchQuest system via text when they begin and finish working, respectively, at a Munchie Mart. This will register the employee's phone number as the point of contact for a specific Munchie Mart until they checkout. The primary users will always be able to use MunchQuest by prompting various actions from the system via text.
-  
+
    The primary users will be able to ask for a specific Munchie Mart's hours, where the system will access stored information about Munchie Mart hours and text the user back. Holiday hours will also be included and modifiable by employees and administration. Primary users will also be able to ask a specific Munchie Mart if a desired item is currently available. The employee of that Munchie Mart will be notified and will then be able to check for that item. The employee can then respond back with "AVAILABLE", "OUT OF STOCK", or "NOT CARRIED" and an optional added message. Finally, primary users can request items to be carried at the Munchie Mart. This information will be compiled and sent to the administrator once a week. With these available actions, hopefully consumer interactions with Munchie Marts will become more enjoyable.
 
 # Questions:
@@ -15,7 +15,7 @@
   4.	Would you like to know who is working at a Munchie Mart before you go?
   5.	Do you know what each Munchie Mart carries?
   6.	Do you ever choose to go to a specific Munchie Mart because of what they carry?
-  7.	How often, if ever, do you go to a Munchie Mart for a specific item? 
+  7.	How often, if ever, do you go to a Munchie Mart for a specific item?
   8.	How often is something you go to Munchie Mart for specifically out of stock? How often is something you go to Munchie         Mart for not carried by it?
   9.	What are some items that Munchie Marts don’t carry that they should?
   10.	What are changes you would like to see with Munchie Mart?
@@ -53,7 +53,7 @@
 - I go to towers munchie because of rocket subs, but also just for convenience.
 - Absolutely. Much of the time.
 
-## Question 7: How often, if ever, do you go to a Munchie Mart for a specific item? 
+## Question 7: How often, if ever, do you go to a Munchie Mart for a specific item?
 - Pretty often. I'm generally looking for a specific frozen food.
 - I often go to munchie with what I want already decided on before I get there.
 - A couple times a week for both.
@@ -80,7 +80,7 @@
 
 # Requirements
 ## Goals
-MunchQuest will be a messaging-based system, facilitating communication between Munchie Mart administrators, employees, and consumers. The purpose of MunchQuest is to improve Munchie Mart consumer interactions to make them more efficient and enjoyable. As such, this project aims to solve three specific issues: when a desired product is out-of-stock, when a desired product is not carried, and when a Munchie Mart’s hours are unknown. With the use of MunchQuest, consumers (mostly students) will be able to figure out if a product is available before going to a Munchie Mart, and to request a product if it is not carried. They will also be able to request the Munchie Mart’s hours. This project will allow students to figure out food options before they enter a Munchie Mart, which will not only increase consumer satisfaction, but decrease any unnecessary traffic in the Munchie Mart. 
+MunchQuest will be a messaging-based system, facilitating communication between Munchie Mart administrators, employees, and consumers. The purpose of MunchQuest is to improve Munchie Mart consumer interactions to make them more efficient and enjoyable. As such, this project aims to solve three specific issues: when a desired product is out-of-stock, when a desired product is not carried, and when a Munchie Mart’s hours are unknown. With the use of MunchQuest, consumers (mostly students) will be able to figure out if a product is available before going to a Munchie Mart, and to request a product if it is not carried. They will also be able to request the Munchie Mart’s hours. This project will allow students to figure out food options before they enter a Munchie Mart, which will not only increase consumer satisfaction, but decrease any unnecessary traffic in the Munchie Mart.
 
 ## User Personas
 * Mac Annie Callee
@@ -149,7 +149,10 @@ MunchQuest will be a messaging-based system, facilitating communication between 
   * Request
     - Possible call: “request Commons Rocket Subs”
     - Adds requested item or message to storage of requests for that Munchie mart
-   
+  * Hours
+    - Possible call: "hours Branscomb"
+    - Returns hours for specific Munchie Mart
+
 ## Non-Functional Requirements
 * This application must be built using Clojure.
 * This application must be hosted on AWS.
@@ -172,23 +175,23 @@ Future iterations will probably include a few additional features:
 # Development Approach
 This style of development process was chosen in order to capture every important step that is required in software development, as well as to make this iterative. Having all of these steps ensures that a “wrong” product will not be created. This process allows for making the right assumptions, mitigating risks, and creating a successful product. Estimates for this project are simply guesses, and are shown per step. As there is one developer/member for this project, much of these estimates will be based on their schedule and possible conflicts that arise. As such, the following time estimates are tentative.
 
-* Communication (2 days) - 
+* Communication (2 days) -
 This process began with communication and empathizing with the users. Three people were interviewed about their interactions and feelings about Munchie Marts. They were also asked for their feelings about a potential solution such as MunchQuest. This interview process provided insight into what was important for specific people, so as to ensure that the project will provide desired solutions to users. Understanding the problem clearly diminishes the risk of creating a project that will not be used by the users.
 
-* Requirement Gathering (2 days) - 
+* Requirement Gathering (2 days) -
 Requirement gathering came from consolidation of interview notes and understanding of the problem. This was necessary in order to figure out exactly what the users would use and desired from this system. Although this is how major requirements (such as the solutions for the three major problems) were found, there were some requirements that arose from being necessary for the major requirements, such as an employee checking in and checking out. Properly gathering requirements diminishes the risk of creating a product that is not what users want.
 
-* Software Design (4 days) - 
+* Software Design (4 days) -
 It would never make sense for a final software design to be the first one that was thought of. This step ensures that many ideas are explored for how to design the project before one design is decided upon, diminishing the risk of a poorly designed project. After thinking through different patterns and designs, the design of the first assignments from this class seems to be a good framework for this project. However, this will have to be further researched before finalizing the design.
 
-* Implementation (4 days) - 
-Implementation can only begin once the software design is finalized. This will require outlining the framework of the project and then creating the specific implementations for different actions required by the project. This should simply be a realization of the software design, so actual coding should not take as much time. Debugging may take a little longer, however. Implementation should be done to have efficient, clean, and commented code. Implementation is where risks such as memory leaks and storage issues can be avoided. 
+* Implementation (4 days) -
+Implementation can only begin once the software design is finalized. This will require outlining the framework of the project and then creating the specific implementations for different actions required by the project. This should simply be a realization of the software design, so actual coding should not take as much time. Debugging may take a little longer, however. Implementation should be done to have efficient, clean, and commented code. Implementation is where risks such as memory leaks and storage issues can be avoided.
 
-* Testing (2 days) - 
+* Testing (2 days) -
 This is important to ensure that the implementation was done correctly. This minimizes the bugs that will be deployed with the first iteration of this project. More importantly, testing ensures that all functionality works as expected, such that the minimum viable product is successful.
 
-* Maintenance (continuous, N/A) - 
+* Maintenance (continuous, N/A) -
 For the current state of this project, maintenance will require having a point of contact that understands the code and can possibly fix small bugs. Having maintenance decreases the risk of an obsolete project if one part doesn’t work right after deployment (although testing should ensure this doesn’t happen).
 
-* Evolution (continuous, N/A) - 
+* Evolution (continuous, N/A) -
 Evolution is for the future iterations of this project. This minimizes the risk of a stagnant, out-of-date project. With the constant progress and work towards this project, future versions will still be applicable. Current functionality will be updated to reflect feedback given and there will be more functionality than the minimum viable product being developed now. This allows this process to be iterative and to have a continuing, successful product.
