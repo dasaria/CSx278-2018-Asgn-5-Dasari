@@ -12,13 +12,56 @@
 
 ;; Do not edit!
 ;; A map specifying the instructor's office hours that is keyed by day of the week.
-(def instructor-hours {"tuesday"  {:start    8
-                                   :end      10
-                                   :location "the chairs outside of the Wondry"}
+(def munchie-hours {"rand"      {:monday    "8am-7:30pm"
+                                 :tuesday   "8am-7:30pm"
+                                 :wednesday "8am-7:30pm"
+                                 :thursday  "8am-7:30pm"
+                                 :friday    "8am-3pm"
+                                 :saturday  "closed"
+                                 :sunday    "closed"}
 
-                       "thursday" {:start    8
-                                   :end      10
-                                   :location "the chairs outside of the Wondry"}})
+                    "commons"   {:monday    "24hours"
+                                 :tuesday   "24hours"
+                                 :wednesday "24hours"
+                                 :thursday  "24hours"
+                                 :friday    "24hours"
+                                 :saturday  "24hours"
+                                 :sunday    "24hours"}
+
+                    "towers"    {:monday    "7am-3am"
+                                 :tuesday   "7am-3am"
+                                 :wednesday "7am-3am"
+                                 :thursday  "7am-3am"
+                                 :friday    "7am-11pm"
+                                 :saturday  "9am-11pm"
+                                 :sunday    "9am-3am"}
+
+                    "branscomb" {:monday    "24hours"
+                                 :tuesday   "24hours"
+                                 :wednesday "24hours"
+                                 :thursday  "24hours"
+                                 :friday    "24hours"
+                                 :saturday  "24hours"
+                                 :sunday    "24hours"}
+
+                    "kissam"    {:monday    "24hours"
+                                 :tuesday   "24hours"
+                                 :wednesday "24hours"
+                                 :thursday  "24hours"
+                                 :friday    "closes at 11pm"
+                                 :saturday  "9am-11pm"
+                                 :sunday    "opens at 9am"}
+
+                    "highland"  {:monday    "7am-3am"
+                                 :tuesday   "7am-3am"
+                                 :wednesday "7am-3am"
+                                 :thursday  "7am-3am"
+                                 :friday    "7am-11pm"
+                                 :saturday  "9am-11pm"
+                                 :sunday    "9am-3am"}})
+
+
+
 
 
 ;; This is a helper function that you might want to use to implement
@@ -70,7 +113,7 @@
   {:cmd (cmd msg)
    :args (args msg)})
 
-;; Asgn 1.
+;; ******************************************************************** Modify
 ;;
 ;; @Todo: Fill in this function to prefix the first of the args
 ;; in a parsed message with "Welcome " and return the result.
@@ -85,7 +128,7 @@
 (defn welcome [pmsg]
   (str "Welcome " (first (:args pmsg))))
 
-;; Asgn 1.
+;; ********************************************************************Delete (add help?)
 ;;
 ;; @Todo: Fill in this function to return the CS 4278 home page.
 ;; Use the `cs4278-brightspace` def to produce the output.
@@ -97,7 +140,7 @@
   cs4278-brightspace)
 
 
-;; Asgn 1.
+;; *******************************************************************Delete
 ;;
 ;; @Todo: Fill in this function to convert from 0-23hr format
 ;; to AM/PM format.
@@ -116,7 +159,7 @@
       "12pm"
       (str (- h 12) "pm"))))
 
-;; Asgn 1.
+;; **************************************************************Change Spec
 ;;
 ;; @Todo: This function should take a map in the format of
 ;; the values in the `instructor-hours` map (e.g. {:start ... :end ... :location ...})
@@ -131,12 +174,16 @@
 ;; See the formatted-hours-test in test/asgnx/core_test.clj for the
 ;; complete specification.
 ;;
-(defn formatted-hours [hours]
-  (str "from " (format-hour (:start hours))
-       " to " (format-hour (:end hours))
-       " in " (:location hours)))
+(defn formatted-hours [location]
+  (str "Sunday " (:sunday location) "\n"
+       "Monday " (:monday location) "\n"
+       "Tuesday " (:tuesday location) "\n"
+       "Wednesday " (:wednesday location) "\n"
+       "Thursday " (:thursday location) "\n"
+       "Friday " (:friday location) "\n"
+       "Saturday " (:saturday location) "\n"))
 
-;; Asgn 1.
+;; ****************************************************************Update spec
 ;;
 ;; @Todo: This function should lookup and see if the instructor
 ;; has office hours on the day specified by the first of the `args`
@@ -151,11 +198,11 @@
 ;; See the office-hours-for-day-test in test/asgnx/core_test.clj for the
 ;; complete specification.
 ;;
-(defn office-hours [{:keys [args cmd]}]
-  (let [newmsg (get instructor-hours (first args))]
+(defn get-munchie-hours [{:keys [args cmd]}]
+  (let [newmsg (get munchie-hours (first args))]
     (if newmsg
-      (formatted-hours newmsg)
-      "there are no office hours on that day")))
+      (str (first args) " hours:\n" (formatted-hours newmsg))
+      "there is no munchie mart at that location")))
 
 
 
@@ -482,9 +529,8 @@
              ;; "find" #(add-question %1 %2)
              ;; "cancel" #(remove-question)
              ;; "request" #(add-request)
-             ;; "hours #(get-hours)"
+             "hours" (stateless get-munchie-hours)
              "homepage" (stateless homepage)
-             "office"   (stateless office-hours)
              "expert"   #(add-expert %1 %2)
              "ask"      #(ask-experts %1 %2)
              "answer"   #(answer-question %1 %2)})
