@@ -4,15 +4,9 @@
             [asgnx.kvstore :as kvstore
              :refer [put! get! list! remove!]]))
 
-
-;; Do not edit!
-;; A def for the course home page URL.
-(def cs4278-brightspace "https://brightspace.vanderbilt.edu/d2l/home/85892")
-
-
-;; Do not edit!
-;; A map specifying the instructor's office hours that is keyed by day of the week.
-(def munchie-hours {"rand"      {:monday    "8am-7:30pm"
+;; map specifying munchie mart hours keyed by day of the week.
+(def munchie-hours {
+                    "rand"      {:monday    "8am-7:30pm"
                                  :tuesday   "8am-7:30pm"
                                  :wednesday "8am-7:30pm"
                                  :thursday  "8am-7:30pm"
@@ -60,120 +54,27 @@
                                  :saturday  "9am-11pm"
                                  :sunday    "9am-3am"}})
 
-
-
-
-
-;; This is a helper function that you might want to use to implement
-;; `cmd` and `args`.
+;; helper function that splits arguments
 (defn words [msg]
   (if msg
       (string/split msg #" ")
       []))
 
-;; Asgn 1.
-;;
-;; @Todo: Fill in this function to return the first word in a text
-;; message.
-;;
-;; Example: (cmd "foo bar") => "foo"
-;;
-;; See the cmd-test in test/asgnx/core_test.clj for the
-;; complete specification.
-;;
+;; returns the first word in a text message
 (defn cmd [msg]
   (first (words msg)))
 
-;; Asgn 1.
-;;
-;; @Todo: Fill in this function to return the list of words following
-;; the command in a text message.
-;;
-;; Example: (args "foo bar baz") => ("bar" "baz")
-;;
-;; See the args-test in test/asgnx/core_test.clj for the
-;; complete specification.
-;;
+;; returns the list of words following the command in a text message.
 (defn args [msg]
   (rest (words msg)))
 
-;; Asgn 1.
-;;
-;; @Todo: Fill in this function to return a map with keys for the
-;; :cmd and :args parsed from the msg.
-;;
-;; Example:
-;;
-;; (parsed-msg "foo bar baz") => {:cmd "foo" :args ["bar" "baz"]}
-;;
-;; See the parsed-msg-test in test/asgnx/core_test.clj for the
-;; complete specification.
-;;
+;; returns a map with keys for the :cmd and :args parsed from the msg.
 (defn parsed-msg [msg]
   {:cmd (cmd msg)
    :args (args msg)})
 
-;; ******************************************************************** Modify
-;;
-;; @Todo: Fill in this function to prefix the first of the args
-;; in a parsed message with "Welcome " and return the result.
-;;
-;; Example:
-;;
-;; (welcome {:cmd "welcome" :args ["foo"]}) => "Welcome foo"
-;;
-;; See the welcome-test in test/asgnx/core_test.clj for the
-;; complete specification.
-;;
-(defn welcome [pmsg]
-  (str "Welcome " (first (:args pmsg))))
-
-;; ********************************************************************Delete (add help?)
-;;
-;; @Todo: Fill in this function to return the CS 4278 home page.
-;; Use the `cs4278-brightspace` def to produce the output.
-;;
-;; See the homepage-test in test/asgnx/core_test.clj for the
-;; complete specification.
-;;
-(defn homepage [_]
-  cs4278-brightspace)
-
-
-;; *******************************************************************Delete
-;;
-;; @Todo: Fill in this function to convert from 0-23hr format
-;; to AM/PM format.
-;;
-;; Example: (format-hour 14) => "2pm"
-;;
-;; See the format-hour-test in test/asgnx/core_test.clj for the
-;; complete specification.
-;;
-(defn format-hour [h]
-  (if (< h 12) ;; am
-    (if (= h 0)
-      "12am"
-      (str h "am"))
-    (if (= h 12) ;; pm
-      "12pm"
-      (str (- h 12) "pm"))))
-
-;; **************************************************************Change Spec
-;;
-;; @Todo: This function should take a map in the format of
-;; the values in the `instructor-hours` map (e.g. {:start ... :end ... :location ...})
-;; and convert it to a string format.
-;;
-;; Example:
-;; (formatted-hours {:start 8 :end 10 :location "the chairs outside of the Wondry"}))
-;; "from 8am to 10am in the chairs outside of the Wondry"
-;;
-;; You should use your format-hour function to implement this.
-;;
-;; See the formatted-hours-test in test/asgnx/core_test.clj for the
-;; complete specification.
-;;
+;;  takes a map in the format of days (as keys) and hours (as a string)
+;; from the munchie-hours map and convert it to a printable format
 (defn formatted-hours [location]
   (str "Sunday " (:sunday location) "\n"
        "Monday " (:monday location) "\n"
@@ -181,41 +82,19 @@
        "Wednesday " (:wednesday location) "\n"
        "Thursday " (:thursday location) "\n"
        "Friday " (:friday location) "\n"
-       "Saturday " (:saturday location) "\n"))
+       "Saturday " (:saturday location)))
 
-;; ****************************************************************Update spec
-;;
-;; @Todo: This function should lookup and see if the instructor
-;; has office hours on the day specified by the first of the `args`
-;; in the parsed message. If so, the function should return the
-;; `formatted-hours` representation of the office hours. If not,
-;; the function should return "there are no office hours on that day".
-;; The office hours for the instructor should be obtained from the
-;; `instructor-hours` map.
-;;
-;; You should use your formatted-hours function to implement this.
-;;
-;; See the office-hours-for-day-test in test/asgnx/core_test.clj for the
-;; complete specification.
-;;
+;; returns hours for a specific munchie mart. if requested munchie mart is
+;; invalid or non-existant, returns "there is no munchie mart at that location"
 (defn get-munchie-hours [{:keys [args cmd]}]
   (let [newmsg (get munchie-hours (first args))]
     (if newmsg
       (str (first args) " hours:\n" (formatted-hours newmsg))
       "there is no munchie mart at that location")))
 
-
-
-
-;; Asgn 2.
-;;
-;; @Todo: Create a function called action-send-msg that takes
-;; a destination for the msg in a parameter called `to`
-;; and the message in a parameter called `msg` and returns
-;; a map with the keys :to and :msg bound to each parameter.
-;; The map should also have the key :action bound to the value
-;; :send.
-;;
+;; takes a destination for the msg in a parameter called `to`and the message in
+;; a parameter called `msg` and returns a map with the keys :to and :msg bound
+;; to each parameter.
 (defn action-send-msg [to msg]
   {:to to
    :msg msg
@@ -312,6 +191,9 @@
 (defn experts-register [experts topic id info]
   [(action-insert [:expert topic id] info)])
 
+(defn employee-register[employees location id info]
+  [(action-insert [:employee location id] info)])
+
 
 ;; Asgn 3.
 ;;
@@ -332,9 +214,15 @@
 (defn experts-unregister [experts topic id]
   [(action-remove [:expert topic id])])
 
-(defn experts-question-msg [experts question-words]
-  (str "Asking " (count experts) " expert(s) for an answer to: \""
-       (string/join " " question-words) "\""))
+(defn employee-unregister [employees location id]
+  [(action-remove [:employee location id])])
+
+(defn requests-remove [requests location]
+  [(action-remove [:requests location])])
+
+(defn employees-question-msg [employees item-words]
+  (str "Asking employee to search for "
+       (string/join " " item-words)))
 
 ;; Asgn 3.
 ;;
@@ -403,7 +291,24 @@
       (let [q (clojure.string/join " " (rest args))]
         [(concat (action-send-msgs experts q)
                  (action-inserts [:conversations] experts {:last-question q :asker user-id}))
-         (experts-question-msg experts (rest args))]))))
+         (employees-question-msg experts (rest args))]))))
+
+(defn add-question [employees {:keys [args user-id]}]
+  (println "employees" employees)
+  (if (nil? employees)
+    [[] "There is nobody working right now to help."]
+    (if (empty? (rest args))
+      [[] "You must ask to find something."]
+      (let [q (clojure.string/join " " (rest args))]
+        [(concat (action-send-msgs employees q)
+                 (action-inserts [:conversations] employees {:last-question q :asker user-id}))
+         (employees-question-msg employees (rest args))]))))
+
+(defn add-request [{:keys [args location]}]
+  (if (empty? (rest args))
+    [[] "You must request something."]
+    (let [item (clojure.string/join " " (rest args))]
+      [(action-inserts [:requests] location {:item item})])))
 
 ;; Asgn 3.
 ;;
@@ -467,6 +372,18 @@
                 (action-inserts [:conversations] [user-id] {}))
          "Your answer was sent."]))))
 
+;; ************************************************* FIX THIS
+(defn format-requests [requests location]
+  (clojure.string/join " " (:location requests)))
+
+(defn get-requests [requests {:keys [location]}]
+  (if (empty? requests)
+    [[] "There are no requests."]
+    (let [msg (format-requests requests location)]
+      (requests-remove requests location)
+      msg)))
+
+
 ;; Asgn 3.
 ;;
 ;; @Todo: Create a function called "add-expert"
@@ -512,6 +429,15 @@
         msg (str user-id " is now an expert on " topic ".")]
     [(experts-register experts (first args) user-id {}) msg]))
 
+(defn checkin-employee [employees {:keys [args user-id]}]
+  (let [location (first args)
+        msg (str user-id " is now working at " location ".")]
+    [(employee-register employees (first args) user-id {}) msg]))
+
+(defn checkout-employee [employees {:keys [args user-id]}]
+  (let [location (first args)
+        msg (str user-id " is now leaving " location ".")]
+    [(employee-unregister employees (first args) user-id) msg]))
 
 ;; Don't edit!
 (defn stateless [f]
@@ -519,21 +445,17 @@
     [[] (apply f args)]))
 
 
-(def routes {"default"  (stateless (fn [& args] "Unknown command."))
-             "welcome"  (stateless welcome)
-             ;; "requests" #(get-requests)
-             ;; "checkin" #(checkin-employee)
-             ;; "checkout" #(checkout-employee)
+(def routes {"default"  (stateless (fn [& args] "Unknown command.")) ;; change to be help
+             "requests" #(get-requests %1 %2)
+             "checkin" #(checkin-employee %1 %2)
+             "checkout" #(checkout-employee %1 %2)
              ;; "question" #(send-question)
-             ;; "answer" #(answer-question %1 %2)
-             ;; "find" #(add-question %1 %2)
+             "answer" #(answer-question %1 %2)
+             "find" #(add-question %1 %2)
              ;; "cancel" #(remove-question)
-             ;; "request" #(add-request)
-             "hours" (stateless get-munchie-hours)
-             "homepage" (stateless homepage)
-             "expert"   #(add-expert %1 %2)
-             "ask"      #(ask-experts %1 %2)
-             "answer"   #(answer-question %1 %2)})
+             "request" #(add-request %1)
+             "hours" (stateless get-munchie-hours)})
+
 
 ;; Asgn 3.
 ;;
@@ -545,36 +467,27 @@
 
 
 ;; ****************************************************************************
-;; Create food-requests-query
+(defn requests-for-food-query [state-mgr pmsg]
+  (let [location (:args pmsg)]
+    (list! state-mgr [:request location])))
 
-;; Create current-employees-query
+(defn employees-at-location-query [state-mgr pmsg]
+  (let [location (:args pmsg)]
+    (list! state-mgr [:employee location])))
 
-(defn experts-on-topic-query [state-mgr pmsg]
-  (let [[topic]  (:args pmsg)]
-    (list! state-mgr [:expert topic])))
-
-
-;; Don't edit!
 (defn conversations-for-user-query [state-mgr pmsg]
   (let [user-id (:user-id pmsg)]
     (get! state-mgr [:conversations user-id])))
 
-
-;; ****************************************************************************
-;; Add
 (def queries
-  {"expert" experts-on-topic-query
-   "ask"    experts-on-topic-query
-   "answer" conversations-for-user-query})
-   ;; "requests" food-requests-query
-   ;; "checkin" current-employees-query
-   ;; "checkout" current-employees-query
-   ;; "question" conversations-for-user-query
-   ;; "answer" conversations-for-user-query
-   ;; "find" conversations-for-user-query
-   ;; "cancel" conversations-for-user-query
-   ;; "request" food-requests-query
-
+  {"requests" requests-for-food-query
+   "checkin"  employees-at-location-query
+   "checkout" employees-at-location-query
+   "question" conversations-for-user-query
+   "answer"   conversations-for-user-query
+   "find"     conversations-for-user-query
+   "cancel"   conversations-for-user-query
+   "request"  requests-for-food-query})
 
 ;; Don't edit!
 (defn read-state [state-mgr pmsg]
@@ -614,11 +527,9 @@
 (defn output [o]
   (second o))
 
-
 ;; Don't edit!
 (defn actions [o]
   (first o))
-
 
 ;; Don't edit!
 (defn invoke [{:keys [effect-handlers] :as system} e]
@@ -629,7 +540,6 @@
         (println "    Invoking:" action "with" e)
         (<! (action system e))))))
 
-
 ;; Don't edit!
 (defn process-actions [system actions]
   (go
@@ -639,7 +549,6 @@
         (let [result (<! (invoke system action))]
           (swap! results conj result)))
       @results)))
-
 
 ;; Don't edit!
 (defn handle-message
@@ -678,6 +587,8 @@
           [as o] (hdlr state pmsg)
           _      (println "  Hdlr result:" [as o])
           arslt  (<! (process-actions system as))
-          _      (println "  Action results:" arslt)]
+          _      (println "  Action results:" arslt)
+          endstate  (<! (read-state state-mgr pmsg))
+          _      (println "  Read state:" endstate)]
       (println "=========================================")
       o)))
