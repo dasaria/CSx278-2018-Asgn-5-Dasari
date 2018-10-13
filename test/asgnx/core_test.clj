@@ -268,6 +268,7 @@
                    "find rand something good"))))
       (is (= "something good"
              (<!! (pending-send-msgs system "test-employee2"))))
+      ;; find test- multiple questions
       (is (= "Asking employee to search for something new"
              (<!! (handle-message
                    system
@@ -281,6 +282,7 @@
                    system
                    "test-employee2"
                    "answer"))))
+      ;; answer test - multiple answers
       (is (= "Your answer was sent."
              (<!! (handle-message
                    system
@@ -288,6 +290,15 @@
                    "answer YES"))))
       (is (= "YES"
              (<!! (pending-send-msgs system "test-user"))))
+             ;; answer test - multiple answers
+      (is (= "question: something new"
+             (<!! (handle-message
+                   system
+                   "test-employee2"
+                   "question"))))
+      (is (= "YES"
+             (<!! (pending-send-msgs system "test-user"))))
+      ;; answer test - multiple answers
       (is (= "Your answer was sent."
              (<!! (handle-message
                    system

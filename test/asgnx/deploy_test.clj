@@ -10,10 +10,10 @@
     (let [{:keys [endpoint phone-number]} (edn/read-string (slurp "deploy.edn"))]
       (is (not (nil? endpoint)))
       (is (not (nil? phone-number)))
-      (let [resp (client/post endpoint {:form-params {:Body "welcome bob"
+      (let [resp (client/post endpoint {:form-params {:Body "default"
                                                       :From phone-number
                                                       :To phone-number}})]
 
         (println "Got response:" resp)
         (is (= 200 (:status resp)))
-        (is (= "Welcome bob" (:body resp)))))))
+        (is (= "Unknown command." (:body resp)))))))
