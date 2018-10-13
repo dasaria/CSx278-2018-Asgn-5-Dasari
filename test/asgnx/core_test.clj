@@ -254,6 +254,12 @@
                    system
                    "test-user"
                    "find highland something good"))))
+      ;; answer test no questions
+      (is (= "You haven't been asked a question."
+             (<!! (handle-message
+                   system
+                   "test-employee2"
+                   "answer okeydokes"))))
       ;; find test
       (is (= "Asking employee to search for something good"
              (<!! (handle-message
@@ -269,6 +275,12 @@
                    "find rand something new"))))
       (is (= "something new"
              (<!! (pending-send-msgs system "test-employee2"))))
+      ;; answer test no questions
+      (is (= "You did not provide an answer."
+             (<!! (handle-message
+                   system
+                   "test-employee2"
+                   "answer"))))
       (is (= "Your answer was sent."
              (<!! (handle-message
                    system

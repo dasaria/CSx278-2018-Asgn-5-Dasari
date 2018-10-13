@@ -263,7 +263,7 @@
       [[] "You must ask to find something."]
       (let [q (clojure.string/join " " (rest args))]
         [(concat (action-send-msgs employees q)
-                 (action-inserts [:conversations] employees {:last-question q :asker user-id}))
+                 (action-inserts [:conversations (first employees) user-id] [:last-question] q))
          (employees-question-msg employees (rest args))]))))
 
 ;; Asgn 3.
@@ -324,8 +324,8 @@
     (if (empty? conversation)
       [[] "You haven't been asked a question."]
       (let [ans (clojure.string/join " " args)]
-        [(list* (action-send-msg (:asker conversation) ans)
-                (action-inserts [:conversations] [user-id] {}))
+        [(concat [(action-send-msg (first (first conversation)) ans)]
+                 [(action-remove [:conversations user-id (first (first conversation))])])
          "Your answer was sent."]))))
 
 (defn format-requests [requests]
