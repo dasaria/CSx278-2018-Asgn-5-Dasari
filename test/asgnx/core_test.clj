@@ -182,23 +182,104 @@
           smgr   (kvstore/create state)
           system {:state-mgr smgr
                   :effect-handlers ehdlrs}]
+      ;; requests test - no requests
       (is (= "There are no requests."
              (<!! (handle-message
                     system
                     "test-user"
                     "requests branscomb"))))
+      ;; request test - nothing requested
+      (is (= "You must request something."
+             (<!! (handle-message
+                    system
+                    "test-user"
+                    "request branscomb"))))
+      ;; request test- request something
+      (is (= "adding sunshine to requests."
+             (<!! (handle-message
+                    system
+                    "test-user"
+                    "request branscomb sunshine"))))
+      ;; request test- request something
+      (is (= "adding lollipops to requests."
+             (<!! (handle-message
+                    system
+                    "test-user"
+                    "request branscomb lollipops"))))
+      ;; request test- request something
+      (is (= "adding and rainbows to requests."
+             (<!! (handle-message
+                    system
+                    "test-user"
+                    "request branscomb and rainbows"))))
+      ;; requests test - get requests multiple
+      (is (= "sunshine, lollipops, and rainbows"
+             (<!! (handle-message
+                    system
+                    "test-admin"
+                    "requests branscomb"))))
+      ;; find test - when no employees
       (is (= "There is nobody working right now to help."
              (<!! (handle-message
                    system
                    "test-user"
                    "find branscomb chex mix"))))
+      ;; checkin test - when noone working
       (is (= "test-employee is now working at highland."
              (<!! (handle-message
                    system
                    "test-employee"
                    "checkin highland"))))
+      ;; checkin test - when someone work somewhere else
+      (is (= "test-employee2 is now working at rand."
+             (<!! (handle-message
+                   system
+                   "test-employee2"
+                   "checkin rand"))))
+      ;; find test - when nothing asked for
       (is (= "You must ask to find something."
              (<!! (handle-message
                    system
                    "test-user"
-                   "find highland chex mix")))))))
+                   "find highland"))))
+      ;; checkout test - when someone working
+      (is (= "test-employee is now leaving highland."
+             (<!! (handle-message
+                   system
+                   "test-employee"
+                   "checkout highland"))))
+      ;; checkout test - checks if worked
+      (is (= "There is nobody working right now to help."
+             (<!! (handle-message
+                   system
+                   "test-user"
+                   "find highland something good"))))
+      ;; find test
+      (is (= "Asking employee to search for something good"
+             (<!! (handle-message
+                   system
+                   "test-user"
+                   "find rand something good"))))
+      (is (= "something good"
+             (<!! (pending-send-msgs system "test-employee2"))))
+      (is (= "Asking employee to search for something new"
+             (<!! (handle-message
+                   system
+                   "test-user2"
+                   "find rand something new"))))
+      (is (= "something new"
+             (<!! (pending-send-msgs system "test-employee2"))))
+      (is (= "Your answer was sent."
+             (<!! (handle-message
+                   system
+                   "test-employee2"
+                   "answer YES"))))
+      (is (= "YES"
+             (<!! (pending-send-msgs system "test-user"))))
+      (is (= "Your answer was sent."
+             (<!! (handle-message
+                   system
+                   "test-employee2"
+                   "answer NO"))))
+      (is (= "NO"
+             (<!! (pending-send-msgs system "test-user2")))))))
