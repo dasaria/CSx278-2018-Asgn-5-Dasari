@@ -198,8 +198,8 @@
 
 (defn get-question [conversation {:keys [user-id]}]
   (if (empty? conversation)
-    [[] "You haven't been asked a question."]
-    (let [msg (str "question: " (get-in conversation [(first (first conversation)) :last-question]))]
+    [[] "You have no pending questions."]
+    (let [msg (get-in conversation [(first (first conversation)) :last-question])]
       [() msg])))
 
 (defn answer-question [conversation {:keys [user-id args]}]
@@ -211,6 +211,14 @@
         [(concat [(action-send-msg (first (first conversation)) ans)]
                  [(action-remove [:conversations user-id (first (first conversation))])])
          "Your answer was sent."]))))
+
+(defn remove-questions [conversation {:keys [user-id]}]
+  (if (empty? conversation)
+    [[] "You don't have any questions."]
+    [(concat (action-send-msgs (keys conversation)
+                               "Your search request could not be completed. Please try again later.")
+             (action-inserts [:conversations] [user-id] {}))
+     "Your questions have been cleared."]))
 
 (defn format-requests [requests]
   (clojure.string/join ", " requests))
@@ -237,7 +245,8 @@
 (defn checkout-employee [employees {:keys [args user-id]}]
   (let [location (first args)
         msg (str user-id " is now leaving " location ".")]
-    [(employee-unregister employees (first args) user-id) msg]))
+    [(employee-unregister employees (first args) user-id)
+     msg]))
 
 ;; Don't edit!
 (defn stateless [f]
@@ -251,7 +260,7 @@
              "question" #(get-question %1 %2)
              "answer" #(answer-question %1 %2)
              "find" #(add-question %1 %2)
-             ;;"cancel" #(remove-question %1 %2)
+             "clear" #(remove-questions %1 %2)
              "request" #(add-request %1 %2)
              "hours" (stateless get-munchie-hours)})
 
@@ -285,7 +294,7 @@
    "question" conversations-for-user-query
    "answer"   conversations-for-user-query
    "find"     employees-at-location-query
-   "cancel"   conversations-for-user-query
+   "clear"   conversations-for-user-query
    "request"  requests-for-food-query})
 
 ;; Don't edit!
