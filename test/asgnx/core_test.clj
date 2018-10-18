@@ -296,8 +296,6 @@
                    system
                    "test-employee2"
                    "question"))))
-      (is (= "something new"
-             (<!! (pending-send-msgs system "test-employee2"))))
       ;; answer test - multiple answers
       (is (= "Your answer was sent."
              (<!! (handle-message
@@ -306,20 +304,18 @@
                    "answer NO"))))
       (is (= "NO"
              (<!! (pending-send-msgs system "test-user2"))))
-      (is (= "Asking employee to search for something new"
+      (is (= "Asking employee to search for something else"
              (<!! (handle-message
                    system
                    "test-user2"
-                   "find rand something new"))))
-      (is (= "something new"
+                   "find rand something else"))))
+      (is (= "something else"
              (<!! (pending-send-msgs system "test-employee2"))))
-      (is (= "something new"
+      (is (= "something else"
              (<!! (handle-message
                    system
                    "test-employee2"
                    "question"))))
-      (is (= "something new"
-             (<!! (pending-send-msgs system "test-employee2"))))
       (is (= "Your questions have been cleared."
              (<!! (handle-message
                    system
