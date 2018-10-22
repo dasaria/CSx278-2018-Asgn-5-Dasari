@@ -176,8 +176,8 @@
 (defn requests-register[requests location item]
   [(action-insert [:requests location item] {})])
 
-(defn employee-unregister [employees location]
-  [(action-remove [:employee location])])
+(defn employee-unregister [employees location id]
+  [(action-remove [:employee location id])])
 
 (defn requests-remove [requests location]
   [(action-remove [:requests location])])
@@ -245,7 +245,7 @@
 (defn checkout-employee [employees {:keys [args user-id]}]
   (let [location (first args)
         msg (str user-id " is now leaving " location ".")]
-    [(employee-unregister employees location)
+    [(employee-unregister employees (first args) user-id)
      msg]))
 
 (defn get-employees [employees {:keys []}]
