@@ -86,7 +86,7 @@
 
 ;; returns hours for a specific munchie mart. if requested munchie mart is
 ;; invalid or non-existant, returns "there is no munchie mart at that location"
-(defn get-munchie-hours [{:keys [args cmd]}]
+(defn get-munchie-hours [{:keys [args]}]
   (let [newmsg (get munchie-hours (first args))]
     (if newmsg
       (str (first args) " hours:\n" (formatted-hours newmsg))
@@ -176,8 +176,8 @@
 (defn requests-register[requests location item]
   [(action-insert [:requests location item] {})])
 
-(defn employee-unregister [employees location id]
-  [(action-remove [:employee location id])])
+(defn employee-unregister [employees location]
+  [(action-remove [:employee location])])
 
 (defn requests-remove [requests location]
   [(action-remove [:requests location])])
@@ -187,7 +187,7 @@
        (string/join " " item-words)))
 
 (defn add-question [employees {:keys [args user-id]}]
-  (if (nil? employees)
+  (if (empty? employees)
     [[] "There is nobody working right now to help."]
     (if (empty? (rest args))
       [[] "You must ask to find something."]
@@ -196,7 +196,7 @@
                  (action-inserts [:conversations (first employees) user-id] [:last-question] q))
          (employees-question-msg employees (rest args))]))))
 
-(defn get-question [conversation {:keys [user-id]}]
+(defn get-question [conversation {:keys []}]
   (if (empty? conversation)
     [[] "You have no pending questions."]
     (let [msg (get-in conversation [(first (first conversation)) :last-question])]
@@ -223,11 +223,11 @@
 (defn format-requests [requests]
   (clojure.string/join ", " requests))
 
-(defn get-requests [requests {:keys [location]}]
+(defn get-requests [requests {:keys [args]}]
   (if (empty? requests)
     [[] "There are no requests."]
     (let [msg (format-requests requests)]
-      [(requests-remove requests location) msg])))
+      [(requests-remove requests (first args)) msg])))
 
 (defn add-request [requests {:keys [args]}]
   (if (empty? (rest args))
@@ -245,8 +245,13 @@
 (defn checkout-employee [employees {:keys [args user-id]}]
   (let [location (first args)
         msg (str user-id " is now leaving " location ".")]
-    [(employee-unregister employees (first args) user-id)
+    [(employee-unregister employees location)
      msg]))
+
+(defn get-employees [employees {:keys []}]
+  (if (empty? employees)
+    [[] "There are no employees working."]
+    [[] (clojure.string/join ", " employees)]))
 
 ;; Don't edit!
 (defn stateless [f]
@@ -254,7 +259,7 @@
     [[] (apply f args)]))
 
 (def routes {"default"  (stateless (fn [& args] "Unknown command.")) ;; change to be help
-             "requests" #(get-requests %1 %2)
+             "getrequests" #(get-requests %1 %2)
              "checkin" #(checkin-employee %1 %2)
              "checkout" #(checkout-employee %1 %2)
              "question" #(get-question %1 %2)
@@ -262,7 +267,8 @@
              "find" #(add-question %1 %2)
              "clear" #(remove-questions %1 %2)
              "request" #(add-request %1 %2)
-             "hours" (stateless get-munchie-hours)})
+             "hours" (stateless get-munchie-hours)
+             "workers" #(get-employees %1 %2)})
 
 
 ;; Asgn 3.
@@ -288,13 +294,14 @@
     (get! state-mgr [:conversations user-id])))
 
 (def queries
-  {"requests" requests-for-food-query
+  {"getrequests" requests-for-food-query
    "checkin"  employees-at-location-query
    "checkout" employees-at-location-query
    "question" conversations-for-user-query
    "answer"   conversations-for-user-query
    "find"     employees-at-location-query
    "clear"   conversations-for-user-query
+   "workers" employees-at-location-query
    "request"  requests-for-food-query})
 
 ;; Don't edit!

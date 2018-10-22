@@ -187,7 +187,7 @@
              (<!! (handle-message
                     system
                     "test-user"
-                    "requests branscomb"))))
+                    "getrequests branscomb"))))
       ;; request test - nothing requested
       (is (= "You must request something."
              (<!! (handle-message
@@ -217,7 +217,13 @@
              (<!! (handle-message
                     system
                     "test-admin"
-                    "requests branscomb"))))
+                    "getrequests branscomb"))))
+                    ;; requests test - get requests multiple
+      (is (= "There are no requests."
+             (<!! (handle-message
+                    system
+                    "test-admin"
+                    "getrequests branscomb"))))
       ;; find test - when no employees
       (is (= "There is nobody working right now to help."
              (<!! (handle-message
@@ -236,6 +242,11 @@
                    system
                    "test-employee2"
                    "checkin rand"))))
+      (is (= "test-employee2"
+             (<!! (handle-message
+                   system
+                   "test-user"
+                   "workers rand"))))
       ;; find test - when nothing asked for
       (is (= "You must ask to find something."
              (<!! (handle-message
@@ -249,11 +260,11 @@
                    "test-employee"
                    "checkout highland"))))
       ;; checkout test - checks if worked
-      (is (= "There is nobody working right now to help."
+      (is (= "There are no employees working."
              (<!! (handle-message
                    system
                    "test-user"
-                   "find highland something good"))))
+                   "workers highland"))))
       ;; answer test no questions
       (is (= "You haven't been asked a question."
              (<!! (handle-message
