@@ -100,108 +100,82 @@
    :msg msg
    :action :send})
 
-;; Asgn 2.
-;;
-;; @Todo: Create a function called action-send-msgs that takes
 ;; takes a list of people to receive a message in a `people`
 ;; parameter and a message to send them in a `msg` parmaeter
 ;; and returns a list produced by invoking the above `action-send-msg`
 ;; function on each person in the people list.
-;;
-;; java-like pseudo code:
-;;
-;; output = new list
-;; for person in people:
-;;   output.add( action-send-msg(person, msg) )
-;; return output
-;;
 (defn action-send-msgs [people msg]
   (map #(action-send-msg % msg) people))
 
-;; Asgn 2.
-;;
-;; @Todo: Create a function called action-insert that takes
-;; a list of keys in a `ks` parameter, a value to bind to that
+;; takes a list of keys in a `ks` parameter, a value to bind to that
 ;; key path to in a `v` parameter, and returns a map with
 ;; the key :ks bound to the `ks` parameter value and the key :v
 ;; vound to the `v` parameter value.)
-;; The map should also have the key :action bound to the value
-;; :assoc-in.
-;;
 (defn action-insert [ks v]
   {:action :assoc-in
    :ks ks
    :v v})
 
-;; Asgn 2.
-;;
-;; @Todo: Create a function called action-inserts that takes:
-;; 1. a key prefix (e.g., [:a :b])
-;; 2. a list of suffixes for the key (e.g., [:c :d])
-;; 3. a value to bind
-;;
-;; and calls (action-insert combined-key value) for each possible
-;; combined-key that can be produced by appending one of the suffixes
-;; to the prefix.
-;;
-;; In other words, this invocation:
-;;
-;; (action-inserts [:foo :bar] [:a :b :c] 32)
-;;
-;; would be equivalent to this:
-;;
-;; [(action-insert [:foo :bar :a] 32)
-;;  (action-insert [:foo :bar :b] 32)
-;;  (action-insert [:foo :bar :c] 32)]
-;;
-(defn action-inserts [prefix ks v]
-  (let [with-prefix (map #(conj prefix %) ks)]
-    (map #(action-insert % v) with-prefix)))
-
-;; Asgn 2.
-;;
-;; @Todo: Create a function called action-remove that takes
-;; a list of keys in a `ks` parameter and returns a map with
+;; takes a list of keys in a `ks` parameter and returns a map with
 ;; the key :ks bound to the `ks` parameter value.
 ;; The map should also have the key :action bound to the value
 ;; :dissoc-in.
-;;
 (defn action-remove [ks]
   {:action :dissoc-in
    :ks ks})
 
+;; calls (action-insert combined-key value) for each possible
+;; combined-key that can be produced by appending one of the suffixes
+;; to the prefix.
+(defn action-inserts [prefix ks v]
+  (let [with-prefix (map #(conj prefix %) ks)]
+    (map #(action-insert % v) with-prefix)))
+
+;; calls (action-remove combined-key value) for each possible
+;; combined-key that can be produced by appending one of the suffixes
+;; to the prefix.
+(defn action-removes [prefix ks]
+  (let [with-prefix (map #(conj prefix %) ks)]
+    (map #(action-remove %) with-prefix)))
+
+;; adds employee to map under [:employee location]
 (defn employee-register[employees location id info]
   [(action-insert [:employee location id] info)])
 
+;; adds request to map under [:requests location]
 (defn requests-register[requests location item]
   [(action-insert [:requests location item] {})])
 
+
+;; removes employee from map from [:employee location]
 (defn employee-unregister [employees location id]
   [(action-remove [:employee location id])])
 
-(defn requests-remove [requests location]
-  [(action-remove [:requests location])])
-
+;; creates message to return to user
 (defn employees-question-msg [employees item-words]
   (str "Asking employee to search for "
        (string/join " " item-words)))
 
+;; adds question to map under [:conversations ]
 (defn add-question [employees {:keys [args user-id]}]
   (if (empty? employees)
     [[] "There is nobody working right now to help."]
     (if (empty? (rest args))
       [[] "You must ask to find something."]
-      (let [q (clojure.string/join " " (rest args))]
+      (let [q (clojure.string/join " " (rest args))
+            emp (first employees)]
         [(concat (action-send-msgs employees q)
-                 (action-inserts [:conversations (first employees) user-id] [:last-question] q))
+                 [(action-insert [:conversations emp user-id q] {})])
          (employees-question-msg employees (rest args))]))))
 
+;; gets question from under [:conversations asked asker]
 (defn get-question [conversation {:keys []}]
   (if (empty? conversation)
     [[] "You have no pending questions."]
-    (let [msg (get-in conversation [(first (first conversation)) :last-question])]
+    (let [msg (first (keys (first (vals conversation))))]
       [() msg])))
 
+;; sends answer msg and removes question from conversations
 (defn answer-question [conversation {:keys [user-id args]}]
   (if (empty? args)
     [[] "You did not provide an answer."]
@@ -209,9 +183,10 @@
       [[] "You haven't been asked a question."]
       (let [ans (clojure.string/join " " args)]
         [(concat [(action-send-msg (first (first conversation)) ans)]
-                 [(action-remove [:conversations user-id (first (first conversation))])])
+                 [(action-remove [:conversations user-id (first (keys conversation))])])
          "Your answer was sent."]))))
 
+;; removes all questions asked to user
 (defn remove-questions [conversation {:keys [user-id]}]
   (if (empty? conversation)
     [[] "You don't have any questions."]
@@ -220,15 +195,18 @@
              (action-inserts [:conversations] [user-id] {}))
      "Your questions have been cleared."]))
 
+;; formats requests with commas
 (defn format-requests [requests]
   (clojure.string/join ", " requests))
 
+;; returns requests and removes requests
 (defn get-requests [requests {:keys [args]}]
   (if (empty? requests)
     [[] "There are no requests."]
     (let [msg (format-requests requests)]
-      [(requests-remove requests (first args)) msg])))
+      [(action-removes [:requests (first args)] requests) msg])))
 
+;; adds request to specific location
 (defn add-request [requests {:keys [args]}]
   (if (empty? (rest args))
     [[] "You must request something."]
@@ -237,27 +215,33 @@
           msg (str "adding " item " to requests.")]
       [(requests-register requests location item) msg])))
 
+;; adds employee to specific location
 (defn checkin-employee [employees {:keys [args user-id]}]
   (let [location (first args)
         msg (str user-id " is now working at " location ".")]
     [(employee-register employees (first args) user-id {}) msg]))
 
+;; removes employee from specific location
 (defn checkout-employee [employees {:keys [args user-id]}]
   (let [location (first args)
         msg (str user-id " is now leaving " location ".")]
     [(employee-unregister employees (first args) user-id)
      msg]))
 
+;; shows employee working at location
 (defn get-employees [employees {:keys []}]
   (if (empty? employees)
     [[] "There are no employees working."]
     [[] (clojure.string/join ", " employees)]))
 
-;; Don't edit!
+;; returns stateless output
 (defn stateless [f]
   (fn [_ & args]
     [[] (apply f args)]))
 
+;; mappings to 'routes' map where created
+;; functions will be invoked when the corresponding text message
+;; commands are received.
 (def routes {"default"  (stateless (fn [& args] "Unknown command.")) ;; change to be help
              "getrequests" #(get-requests %1 %2)
              "checkin" #(checkin-employee %1 %2)
@@ -270,29 +254,24 @@
              "hours" (stateless get-munchie-hours)
              "workers" #(get-employees %1 %2)})
 
+;; Queries******
 
-;; Asgn 3.
-;;
-;; @Todo: Add mappings of the cmds "expert", "ask", and "answer" to
-;; to the `routes` map so that the functions that you
-;; created will be invoked when the corresponding text message
-;; commands are received.
-;;})
-
-
-;; ****************************************************************************
+;; returns state where requests are stored
 (defn requests-for-food-query [state-mgr pmsg]
   (let [[location] (:args pmsg)]
     (list! state-mgr [:requests location])))
 
+;; returns state with employees at a location
 (defn employees-at-location-query [state-mgr pmsg]
   (let [[location] (:args pmsg)]
     (list! state-mgr [:employee location])))
 
+;; returns state with conversations of specific user
 (defn conversations-for-user-query [state-mgr pmsg]
   (let [user-id (:user-id pmsg)]
     (get! state-mgr [:conversations user-id])))
 
+;; specifies needed states for different commands
 (def queries
   {"getrequests" requests-for-food-query
    "checkin"  employees-at-location-query
@@ -304,48 +283,31 @@
    "workers" employees-at-location-query
    "request"  requests-for-food-query})
 
-;; Don't edit!
+;; reads state using specified query
 (defn read-state [state-mgr pmsg]
   (go
     (if-let [qfn (get queries (:cmd pmsg))]
       (<! (qfn state-mgr pmsg))
       {})))
 
-;; Asgn 1.
-;;
-;; @Todo: This function should return a function (<== pay attention to the
-;; return type) that takes a parsed message as input and returns the
-;; function in the `routes` map that is associated with a key matching
-;; the `:cmd` in the parsed message. The returned function would return
-;; `welcome` if invoked with `{:cmd "welcome"}`.
-;;
-;; Example:
-;;
-;; (let [msg {:cmd "welcome" :args ["bob"]}]
-;;   (((create-router {"welcome" welcome}) msg) msg) => "Welcome bob"
-;;
-;; If there isn't a function in the routes map that is mapped to a
-;; corresponding key for the command, you should return the function
-;; mapped to the key "default".
-;;
-;; See the create-router-test in test/asgnx/core_test.clj for the
-;; complete specification.
-;;
+;; returns a function (<== pay attention to the return type that takes a
+;; parsed message as input and returns the function in the `routes` map that
+;; is associated with a key matching the `:cmd` in the parsed message.
 (defn create-router [routes]
   #(let [newmsg (get routes (:cmd %))]
       (if newmsg
         newmsg
         (get routes "default"))))
 
-;; Don't edit!
+;; gets output from o
 (defn output [o]
   (second o))
 
-;; Don't edit!
+;; gets first action from o actions
 (defn actions [o]
   (first o))
 
-;; Don't edit!
+;; invokes actions from user <see handle-message>
 (defn invoke [{:keys [effect-handlers] :as system} e]
   (go
     (println "    Invoke:" e)
@@ -354,7 +316,7 @@
         (println "    Invoking:" action "with" e)
         (<! (action system e))))))
 
-;; Don't edit!
+;; processes actions from user <see handle-message>
 (defn process-actions [system actions]
   (go
     (println "  Processing actions:" actions)
@@ -364,7 +326,7 @@
           (swap! results conj result)))
       @results)))
 
-;; Don't edit!
+;; Handles message from user
 (defn handle-message
   "
     This function orchestrates the processing of incoming messages
