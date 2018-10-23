@@ -129,24 +129,24 @@ MunchQuest will be a messaging-based system, facilitating communication between 
     - Shows who is checked in at a given location
 
 **Employee**
-  * Checkin
+  * checkin
     - Possible call: “checkin branscomb”
     - Registers employee’s phone number as employee currently working at specific Munchie Mart
-  * Checkout
+  * checkout
     - Possible call: “checkout Highland”
     - Unregisters employee’s phone number from being the current employee at a specific Munchie Mart
-  * Answer
+  * answer
     - Possible call: “answer available Personalized Message”
     - Sends a text with answer to whoever asked the oldest question asked
 
 **Consumer**
-  * Find
+  * find
     - Possible call: “find Towers Annie’s Mac and Cheese”
     - Sends notification to employee, but also stores in questions that have been asked for that Munchie Mart
-  * Request
+  * request
     - Possible call: “request Commons Rocket Subs”
     - Adds requested item or message to storage of requests for that Munchie mart
-  * Hours
+  * hours
     - Possible call: "hours Branscomb"
     - Returns hours for specific Munchie Mart
 
@@ -155,6 +155,8 @@ MunchQuest will be a messaging-based system, facilitating communication between 
 * This application must be hosted on AWS.
 * This application must be used through cellular messaging.
 * This application must be able to support all undergraduate users.
+* Each user can only ask one question to a munchie mart at a time.
+* Employees need to answer questions in the order that they receive them.
 
 ## Risks
 * Munchie Mart consumers will overuse the system.
