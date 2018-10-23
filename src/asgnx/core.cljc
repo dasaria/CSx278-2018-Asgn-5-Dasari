@@ -164,7 +164,7 @@
     [[] "There is nobody working right now to help."]
     (if (empty? (rest args))
       [[] "You must ask to find something."]
-      (let [q (clojure.string/join " " (rest args))
+      (let [q (str "Search for: " (clojure.string/join " " (rest args)))
             emp (first employees)]
         [(concat (action-send-msgs employees q)
                  [(action-insert [:conversations emp user-id] {})])
@@ -176,7 +176,7 @@
     [[] "You did not provide an answer."]
     (if (empty? conversation)
       [[] "You haven't been asked a question."]
-      (let [ans (clojure.string/join " " args)]
+      (let [ans (str "Answer: " (clojure.string/join " " args))]
         [(concat [(action-send-msg (first conversation) ans)]
                  [(action-remove [:conversations user-id (first conversation)])])
          "Your answer was sent."]))))
@@ -192,7 +192,7 @@
 
 ;; formats requests with commas
 (defn format-requests [requests]
-  (clojure.string/join ", " requests))
+  (str "Requests: " (clojure.string/join ", " requests)))
 
 ;; returns requests and removes requests
 (defn get-requests [requests {:keys [args]}]

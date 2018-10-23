@@ -213,7 +213,7 @@
                     "test-user"
                     "request branscomb and rainbows"))))
       ;; requests test - get requests multiple
-      (is (= "sunshine, lollipops, and rainbows"
+      (is (= "Requests: sunshine, lollipops, and rainbows"
              (<!! (handle-message
                     system
                     "test-admin"
@@ -277,7 +277,7 @@
                    system
                    "test-user"
                    "find rand something good"))))
-      (is (= "something good"
+      (is (= "Search for: something good"
              (<!! (pending-send-msgs system "test-employee2"))))
       ;; find test- multiple questions
       (is (= "Asking employee to search for something new"
@@ -285,7 +285,7 @@
                    system
                    "test-user2"
                    "find rand something new"))))
-      (is (= "something new"
+      (is (= "Search for: something new"
              (<!! (pending-send-msgs system "test-employee2"))))
       ;; answer test no questions
       (is (= "You did not provide an answer."
@@ -299,7 +299,7 @@
                    system
                    "test-employee2"
                    "answer YES"))))
-      (is (= "YES"
+      (is (= "Answer: YES"
              (<!! (pending-send-msgs system "test-user"))))
       ;; answer test - multiple answers
       (is (= "Your answer was sent."
@@ -307,12 +307,5 @@
                    system
                    "test-employee2"
                    "answer NO"))))
-      (is (= "NO"
-             (<!! (pending-send-msgs system "test-user2"))))
-      (is (= "Asking employee to search for something else"
-             (<!! (handle-message
-                   system
-                   "test-user2"
-                   "find rand something else"))))
-      (is (= "something else"
-             (<!! (pending-send-msgs system "test-employee2")))))))
+      (is (= "Answer: NO"
+             (<!! (pending-send-msgs system "test-user2")))))))

@@ -6,7 +6,7 @@
 
    The primary users of this system are students and other Vanderbilt personnel who would buy products from Munchie Mart. The secondary users that will use this system are the Munchie Mart employees and administration. Munchie Mart employees will be required to checkin and checkout of the MunchQuest system via text when they begin and finish working, respectively, at a Munchie Mart. This will register the employee's phone number as the point of contact for a specific Munchie Mart until they checkout. The primary users will always be able to use MunchQuest by prompting various actions from the system via text.
 
-   The primary users will be able to ask for a specific Munchie Mart's hours, where the system will access stored information about Munchie Mart hours and text the user back. Holiday hours will also be included and modifiable by employees and administration. Primary users will also be able to ask a specific Munchie Mart if a desired item is currently available. The employee of that Munchie Mart will be notified and will then be able to check for that item. The employee can then respond back with "AVAILABLE", "OUT OF STOCK", or "NOT CARRIED" and an optional added message. Finally, primary users can request items to be carried at the Munchie Mart. This information will be compiled and sent to the administrator once a week. With these available actions, hopefully consumer interactions with Munchie Marts will become more enjoyable.
+   The primary users will be able to ask for a specific Munchie Mart's hours, where the system will access stored information about Munchie Mart hours and text the user back. Holiday hours will also be included and modifiable by employees and administration. Primary users will also be able to ask a specific Munchie Mart if a desired item is currently available. The employee of that Munchie Mart will be notified and will then be able to check for that item. The employee can then respond back a message about its availability. Finally, primary users can request items to be carried at the Munchie Mart. This information will be compiled and pulled by the administrator at their discretion. With these available actions, hopefully consumer interactions with Munchie Marts will become more enjoyable.
 
 # Questions:
   1.	How often do you go to Munchie Mart?
@@ -133,7 +133,7 @@ MunchQuest will be a messaging-based system, facilitating communication between 
     - Possible call: “checkin branscomb”
     - Registers employee’s phone number as employee currently working at specific Munchie Mart
   * checkout
-    - Possible call: “checkout Highland”
+    - Possible call: “checkout highland”
     - Unregisters employee’s phone number from being the current employee at a specific Munchie Mart
   * answer
     - Possible call: “answer available Personalized Message”
@@ -141,13 +141,13 @@ MunchQuest will be a messaging-based system, facilitating communication between 
 
 **Consumer**
   * find
-    - Possible call: “find Towers Annie’s Mac and Cheese”
+    - Possible call: “find towers Annie’s Mac and Cheese”
     - Sends notification to employee, but also stores in questions that have been asked for that Munchie Mart
   * request
-    - Possible call: “request Commons Rocket Subs”
+    - Possible call: “request commons Rocket Subs”
     - Adds requested item or message to storage of requests for that Munchie mart
   * hours
-    - Possible call: "hours Branscomb"
+    - Possible call: "hours branscomb"
     - Returns hours for specific Munchie Mart
 
 ## Non-Functional Requirements
@@ -157,6 +157,7 @@ MunchQuest will be a messaging-based system, facilitating communication between 
 * This application must be able to support all undergraduate users.
 * Each user can only ask one question to a munchie mart at a time.
 * Employees need to answer questions in the order that they receive them.
+* Always use lower-case to keep everything standardized.
 
 ## Risks
 * Munchie Mart consumers will overuse the system.
