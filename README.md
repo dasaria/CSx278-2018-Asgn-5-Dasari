@@ -136,9 +136,6 @@ MunchQuest will be a messaging-based system, facilitating communication between 
   * Checkout
     - Possible call: “checkout Highland”
     - Unregisters employee’s phone number from being the current employee at a specific Munchie Mart
-  * Question
-    - Possible call: “question”
-    - Sends a text back with the oldest question asked
   * Answer
     - Possible call: “answer available Personalized Message”
     - Sends a text with answer to whoever asked the oldest question asked

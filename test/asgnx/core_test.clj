@@ -301,12 +301,6 @@
                    "answer YES"))))
       (is (= "YES"
              (<!! (pending-send-msgs system "test-user"))))
-             ;; answer test - multiple answers
-      (is (= "something new"
-             (<!! (handle-message
-                   system
-                   "test-employee2"
-                   "question"))))
       ;; answer test - multiple answers
       (is (= "Your answer was sent."
              (<!! (handle-message
@@ -322,20 +316,10 @@
                    "find rand something else"))))
       (is (= "something else"
              (<!! (pending-send-msgs system "test-employee2"))))
-      (is (= "something else"
-             (<!! (handle-message
-                   system
-                   "test-employee2"
-                   "question"))))
       (is (= "Your questions have been cleared."
              (<!! (handle-message
                    system
                    "test-employee2"
                    "clear"))))
       (is (= "Your search request could not be completed. Please try again later."
-             (<!! (pending-send-msgs system "test-user2"))))
-      (is (= "You have no pending questions."
-             (<!! (handle-message
-                   system
-                   "test-employee2"
-                   "question")))))))
+             (<!! (pending-send-msgs system "test-user2")))))))
