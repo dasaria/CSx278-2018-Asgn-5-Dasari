@@ -146,6 +146,8 @@
 (defn requests-register[requests location item]
   [(action-insert [:requests location item] {})])
 
+(defn item-register[employees employee user-id q]
+  [(action-insert [:conversations employee user-id q] {})])
 
 ;; removes employee from map from [:employee location]
 (defn employee-unregister [employees location id]
@@ -165,15 +167,8 @@
       (let [q (clojure.string/join " " (rest args))
             emp (first employees)]
         [(concat (action-send-msgs employees q)
-                 [(action-insert [:conversations emp user-id q] {})])
+                 [(action-insert [:conversations emp q user-id] {})])
          (employees-question-msg employees (rest args))]))))
-
-;; gets question from under [:conversations asked asker]
-(defn get-question [conversation {:keys []}]
-  (if (empty? conversation)
-    [[] "You have no pending questions."]
-    (let [msg (first (keys (first (vals conversation))))]
-      [() msg])))
 
 ;; sends answer msg and removes question from conversations
 (defn answer-question [conversation {:keys [user-id args]}]
@@ -182,17 +177,17 @@
     (if (empty? conversation)
       [[] "You haven't been asked a question."]
       (let [ans (clojure.string/join " " args)]
-        [(concat [(action-send-msg (first (first conversation)) ans)]
-                 [(action-remove [:conversations user-id (first (keys conversation))])])
+        [(concat [(action-send-msg (first conversation) ans)]
+                 [(action-remove [:conversations user-id conversation])])
          "Your answer was sent."]))))
 
 ;; removes all questions asked to user
 (defn remove-questions [conversation {:keys [user-id]}]
   (if (empty? conversation)
     [[] "You don't have any questions."]
-    [(concat (action-send-msgs (keys conversation)
+    [(concat (action-send-msgs conversation
                                "Your search request could not be completed. Please try again later.")
-             (action-inserts [:conversations] [user-id] {}))
+             [(action-remove [:conversations user-id conversation])])
      "Your questions have been cleared."]))
 
 ;; formats requests with commas
@@ -246,7 +241,6 @@
              "getrequests" #(get-requests %1 %2)
              "checkin" #(checkin-employee %1 %2)
              "checkout" #(checkout-employee %1 %2)
-             "question" #(get-question %1 %2)
              "answer" #(answer-question %1 %2)
              "find" #(add-question %1 %2)
              "clear" #(remove-questions %1 %2)
@@ -269,14 +263,14 @@
 ;; returns state with conversations of specific user
 (defn conversations-for-user-query [state-mgr pmsg]
   (let [user-id (:user-id pmsg)]
-    (get! state-mgr [:conversations user-id])))
+    (list! state-mgr [:conversations user-id])))
+
 
 ;; specifies needed states for different commands
 (def queries
   {"getrequests" requests-for-food-query
    "checkin"  employees-at-location-query
    "checkout" employees-at-location-query
-   "question" conversations-for-user-query
    "answer"   conversations-for-user-query
    "find"     employees-at-location-query
    "clear"   conversations-for-user-query
