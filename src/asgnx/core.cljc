@@ -167,7 +167,7 @@
       (let [q (clojure.string/join " " (rest args))
             emp (first employees)]
         [(concat (action-send-msgs employees q)
-                 [(action-insert [:conversations emp user-id q] {})])
+                 [(action-insert [:conversations emp user-id] {})])
          (employees-question-msg employees (rest args))]))))
 
 ;; sends answer msg and removes question from conversations
@@ -187,7 +187,7 @@
     [[] "You don't have any questions."]
     [(concat (action-send-msgs conversation
                                "Your search request could not be completed. Please try again later.")
-             [(action-remove [:conversations user-id conversation])])
+             [(action-remove [:conversations user-id (first conversation)])])
      "Your questions have been cleared."]))
 
 ;; formats requests with commas

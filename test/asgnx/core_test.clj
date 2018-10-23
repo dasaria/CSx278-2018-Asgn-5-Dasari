@@ -315,11 +315,4 @@
                    "test-user2"
                    "find rand something else"))))
       (is (= "something else"
-             (<!! (pending-send-msgs system "test-employee2"))))
-      (is (= "Your questions have been cleared."
-             (<!! (handle-message
-                   system
-                   "test-employee2"
-                   "clear"))))
-      (is (= "Your search request could not be completed. Please try again later."
-             (<!! (pending-send-msgs system "test-user2")))))))
+             (<!! (pending-send-msgs system "test-employee2")))))))

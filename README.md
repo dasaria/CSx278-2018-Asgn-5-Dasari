@@ -124,7 +124,6 @@ MunchQuest will be a messaging-based system, facilitating communication between 
   * getrequests
     - Possible call: “getrequests highland”
     - Gets all item requests sent to all Munchie Marts, sends this information to administrator, and clears it from system storage
-
   * workers
     - Possible call: "workers rand"
     - Shows who is checked in at a given location
