@@ -121,13 +121,17 @@ MunchQuest will be a messaging-based system, facilitating communication between 
 
 ## Overview
 **Admin**
-  * Requests
-    - Possible call: “requests”
+  * getrequests
+    - Possible call: “getrequests highland”
     - Gets all item requests sent to all Munchie Marts, sends this information to administrator, and clears it from system storage
+
+  * workers
+    - Possible call: "workers rand"
+    - Shows who is checked in at a given location
 
 **Employee**
   * Checkin
-    - Possible call: “checkin Branscomb”
+    - Possible call: “checkin branscomb”
     - Registers employee’s phone number as employee currently working at specific Munchie Mart
   * Checkout
     - Possible call: “checkout Highland”
@@ -143,9 +147,6 @@ MunchQuest will be a messaging-based system, facilitating communication between 
   * Find
     - Possible call: “find Towers Annie’s Mac and Cheese”
     - Sends notification to employee, but also stores in questions that have been asked for that Munchie Mart
-  * Cancel
-    - Possible call: “cancel”
-    - deletes last question asked by user
   * Request
     - Possible call: “request Commons Rocket Subs”
     - Adds requested item or message to storage of requests for that Munchie mart
